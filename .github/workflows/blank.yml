@@ -4,15 +4,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # עדכון לגרסה חדשה יותר
-      - uses: actions/setup-node@v4 # עדכון לגרסה חדשה יותר
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22 # עדכון לגרסה יציבה וחדשה
       - uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Install dependencies
-        run: npm install # שימוש מפורש ב-npm
+        run: npm install
       - name: Build APK
-        run: npx eas-cli build -p android --profile preview --non-interactive
+        run: npx eas-cli build -p android --profile preview --non-interactive --no-wait
