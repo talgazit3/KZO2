@@ -15,10 +15,19 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: Install dependencies
-        run: npm install
+      - name: Find and Install Dependencies
+        run: |
+          # מחפש את התיקייה שבה נמצא package.json ונכנס אליה
+          TARGET_DIR=$(find . -name "package.json" -exec dirname {} \;)
+          echo "Found package.json in $TARGET_DIR"
+          cd $TARGET_DIR
+          npm install
 
       - name: Build APK
-        run: eas build -p android --profile preview --non-interactive
+        run: |
+          # מחפש את התיקייה שבה נמצא app.json ונכנס אליה לבנייה
+          TARGET_DIR=$(find . -name "app.json" -exec dirname {} \;)
+          cd $TARGET_DIR
+          eas build -p android --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
